@@ -46,7 +46,7 @@
             color: #0d47a1;
         }
 
-        /* Student and Course Management */
+        /* Management sections */
         .management-section {
             margin-bottom: 20px;
         }
@@ -68,7 +68,6 @@
             background-color: #f5f5f5;
             color: #333;
         }
-
         .button {
             background-color: #3f51b5;
             color: white;
@@ -80,6 +79,10 @@
         }
         .button:hover {
             background-color: #303f9f;
+        }
+        .student {
+            padding-top: 10px;
+            display: flex;
         }
 
         /* Reports Section */
@@ -128,7 +131,7 @@
         <!-- Student Management -->
         <div class="management-section">
             <h2>Student Management</h2>
-            <table class="table">
+            <table class="table" id="studentTable">
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -139,25 +142,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Scamer</td>
-                        <td>0420</td>
-                        <td>Computer Science</td>
-                        <td>9.6</td>
-                        <td>
-                            <button class="button" onclick="editStudent()">Edit</button>
-                            <button class="button" onclick="deleteStudent()">Delete</button>
-                        </td>
-                    </tr>
+                    <!-- Rows will be dynamically populated -->
                 </tbody>
             </table>
-            <button class="button" onclick="addStudent()">+ Add Student</button>
+            <div class="student">
+                <button class="button" onclick="addStudent()">Add Student</button>
+            </div>
         </div>
 
         <!-- Course Management -->
         <div class="management-section">
             <h2>Course Management</h2>
-            <table class="table">
+            <table class="table" id="courseTable">
                 <thead>
                     <tr>
                         <th>Course Name</th>
@@ -167,14 +163,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Computer Science</td>
-                        <td>Sohaib</td>
-                        <td>45/50</td>
-                        <td><button class="button" onclick="editCourse()">Edit</button></td>
-                    </tr>
+                    <!-- Rows will be dynamically populated -->
                 </tbody>
             </table>
+            <div class="student">
+                <button class="button" onclick="addCourse()"> Add Course</button>
+            </div>
         </div>
 
         <!-- Reports Section -->
@@ -186,26 +180,151 @@
     </div>
 
     <script>
-        // JavaScript functions for button actions
+        // Student data
+        let students = [
+            { name: "XYZ", id: "0420", course: "Computer Science", gpa: "9.6" }
+        ];
+
+        // Course data
+        let courses = [
+            { name: "Computer Science", instructor: "Sohaib", enrolled: "45/50" },
+            { name: "Business Ethics", instructor: "Dhruv", enrolled: "15/50" },
+            { name: "English", instructor: "Ujwal", enrolled: "36/50" },
+        ];
+
+        // Update student table
+        function updateStudentTable() {
+            const tableBody = document.querySelector("#studentTable tbody");
+            tableBody.innerHTML = ""; // Clear existing rows
+            students.forEach((student, index) => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${student.name}</td>
+                    <td>${student.id}</td>
+                    <td>${student.course}</td>
+                    <td>${student.gpa}</td>
+                    <td>
+                        <button class="button" onclick="editStudent(${index})">Edit</button>
+                        <button class="button" onclick="deleteStudent(${index})">Delete</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Add student
         function addStudent() {
-            alert("Add Student functionality coming soon!");
+            const name = prompt("Enter student name:");
+            const id = prompt("Enter student ID:");
+            const course = prompt("Enter course:");
+            const gpa = prompt("Enter GPA:");
+            if (name && id && course && gpa) {
+                students.push({ name, id, course, gpa });
+                updateStudentTable();
+                alert("Student added successfully!");
+            } else {
+                alert("All fields are required!");
+            }
         }
 
-        function editStudent() {
-            alert("Edit Student functionality coming soon!");
+        // Edit student
+        function editStudent(index) {
+            const student = students[index];
+            if (student) {
+                student.name = prompt("Edit name:", student.name) || student.name;
+                student.course = prompt("Edit course:", student.course) || student.course;
+                student.gpa = prompt("Edit GPA:", student.gpa) || student.gpa;
+                updateStudentTable();
+                alert("Student updated successfully!");
+            }
         }
 
-        function deleteStudent() {
-            alert("Delete Student functionality coming soon!");
+        // Delete student
+        function deleteStudent(index) {
+            students.splice(index, 1);
+            updateStudentTable();
+            alert("Student deleted!");
         }
 
-        function editCourse() {
-            alert("Edit Course functionality coming soon!");
+        // Update course table
+        function updateCourseTable() {
+            const tableBody = document.querySelector("#courseTable tbody");
+            tableBody.innerHTML = ""; // Clear existing rows
+            courses.forEach((course, index) => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${course.name}</td>
+                    <td>${course.instructor}</td>
+                    <td>${course.enrolled}</td>
+                    <td>
+                        <button class="button" onclick="editCourse(${index})">Edit</button>
+                        <button class="button" onclick="deleteCourse(${index})">Delete</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
         }
 
+        // Add course
+        function addCourse() {
+            const name = prompt("Enter course name:");
+            const instructor = prompt("Enter instructor:");
+            const enrolled = prompt("Enter enrolled (e.g., 10/50):");
+            if (name && instructor && enrolled) {
+                courses.push({ name, instructor, enrolled });
+                updateCourseTable();
+                alert("Course added successfully!");
+            } else {
+                alert("All fields are required!");
+            }
+        }
+
+        // Edit course
+        function editCourse(index) {
+            const course = courses[index];
+            if (course) {
+                course.name = prompt("Edit course name:", course.name) || course.name;
+                course.instructor = prompt("Edit instructor:", course.instructor) || course.instructor;
+                course.enrolled = prompt("Edit enrolled:", course.enrolled) || course.enrolled;
+                updateCourseTable();
+                alert("Course updated successfully!");
+            }
+        }
+
+        // Delete course
+        function deleteCourse(index) {
+            courses.splice(index, 1);
+            updateCourseTable();
+            alert("Course deleted!");
+        }
+
+        // Download report
         function downloadReport() {
-            alert("Download Report functionality coming soon!");
-        }
+        let csvContent = "data:text/csv;charset=utf-8,";
+        csvContent += "Name,ID,Course,GPA\n"; // Add headers
+
+        // Add student data
+        students.forEach(student => {
+            csvContent += `${student.name},${student.id},${student.course},${student.gpa}\n`;
+        });
+
+        // Create a downloadable link
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "student_report.csv");
+        document.body.appendChild(link);
+
+        // Trigger the download
+        link.click();
+        document.body.removeChild(link);
+
+        alert("Report downloaded successfully!");
+    }
+
+        // Initialize tables
+        updateStudentTable();
+        updateCourseTable();
     </script>
 </body>
 </html>

@@ -22,6 +22,10 @@
         .dashboard {
             text-align: center;
             margin-top: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
         h1 {
             color: #00796b;
@@ -46,15 +50,20 @@
     <div class="navbar">Admin Dashboard</div>
     <div class="dashboard">
         <h1>Welcome, Admin!</h1>
-        <div class="card">
-            <p>Manage Users</p>
-        </div>
-        <div class="card">
-            <p>View Reports</p>
-        </div>
-        <div class="card">
-            <p>Settings</p>
-        </div>
+        <button class="card" onclick="openPENSystem()">
+            Manage Users
+        </button>
+        <button class="card" >
+            View Reports
+        </button>
+        <button class="card">
+            Settings
+        </button>
     </div>
+    <script>
+        function openPENSystem() {
+            window.location.href = "index.html"; // Replace with the actual path
+        }
+    </script>
 </body>
 </html>
