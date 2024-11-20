@@ -1,7 +1,7 @@
-from flask import Flask, jsonify, request, render_template
-import mysql.connector
-import pandas as pd
-import matplotlib.pyplot as plt
+from flask import Flask, jsonify, request, render_template # type: ignore
+import mysql.connector # type: ignore
+import pandas as pd # type: ignore
+import matplotlib.pyplot as plt # type: ignore
 import os
 
 app = Flask(__name__)
